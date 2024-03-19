@@ -1,15 +1,15 @@
 const player = [
 {   name: "player1",
-    mark: "https://thumb.ac-illust.com/00/00bfd87ef342649ee0c4eb18018a8e5b_w.jpeg",
+    mark: "◯",
     script:"プレイヤー1(マル)のターンです"
 },
 {   name: "player2",
-    mark:"https://kuku-keke.com/wp-content/uploads/2020/10/3592_1-768x768.png",
+    mark:"×",
     script:"プレイヤー2(バツ)のターンです"
 }]
 
 const board = [[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0],];
-
+let count = 0;
 let playerSelector = 0;
 let gameActive = true;
 const cell = document.querySelectorAll('.cell');
@@ -34,13 +34,20 @@ cell.forEach(cell => {
             console.log('not empty');
         }else{
             if(gameActive){
-                const img = document.createElement('img');
-                img.src = player[playerSelector].mark;
-                cell.appendChild(img);
+                const h1 = document.createElement('h1');
+                h1.innerHTML = player[playerSelector].mark;
+                h1.classList.add('mark');
+                cell.appendChild(h1);
                 board[playerSelector][cell.id] += 1;
                 switchPlayer(playerSelector);
                 playerSelector = switchPlayer(playerSelector);
                 checkWinner();
+                count++;
+                if(count === 9 && gameActive === true){
+                    alert('引き分けです');
+                    playerDisplay.textContent = "引き分けです";
+                    gameActive = false;
+                }
             }
         }
     });
@@ -63,7 +70,6 @@ function checkWinner() {
                 alert('プレイヤー' + (i + 1) + 'のかちです！ ');
                 playerDisplay.textContent = "  プレイヤー" + (i + 1) + "のかちです！";
                 gameActive = false;
-                console.log(gameActive);
                 return;
             }
         }
